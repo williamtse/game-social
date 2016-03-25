@@ -1,0 +1,45 @@
+<?php echo $this->tag->stylesheetLink("css/default.css")?>
+<div class="rightContent">
+    <h3><a href="/admin/games">添加游戏</a>  <span class="success"><?php if(isset($sucessMessage)){echo $sucessMessage;} ?></span></h3>
+    <?php echo $this->tag->form("admin/gamesadd"); ?>
+    <p>
+        <label for="gameBigCategoryId">游戏分类：</label>
+        <?php echo $this->tag->selectStatic("gameBigCategoryId", $gameBigCategorys) ?>   
+        <label for="gameCategoryId">游戏类型：</label>
+        <?php echo $this->tag->selectStatic("gameCategoryId", $gameCategorys) ?>
+        <label for="gameCategoryId">游戏题材：</label>
+        <?php echo $this->tag->selectStatic("gameStyleId", $gameStyles) ?>
+    </p>
+    <p>
+        <label for="gameName">游戏名称：</label>
+        <?php echo $this->tag->textField("gameName") ?>
+        <span class="error"><?php echo isset($gameNameError) ? $gameNameError : ''; ?></span>
+    </p>
+    <p>
+        <label for="preCharacter">游戏名称-拼音头字母：</label>
+        <?php echo $this->tag->textField("preCharacter") ?>
+        <span class="error"><?php echo isset($preCharacterError) ? $preCharacterError : ''; ?></span>
+    </p>
+    <p>
+        <label for="developCompany">开发公司：</label>
+        <?php echo $this->tag->textField('developCompany') ?>
+        <span class="error"><?php echo isset($developCompanyError) ? $developCompanyError : ''; ?></span>
+    </p>
+    <p>
+        <label for="startRunTime">开始运营时间：</label>
+        <?php echo $this->tag->dateField(array("startRunTime", "value" => "14-12-1980")) ?>
+    </p>
+    <p>
+        <label for="whichD">游戏画面：</label>
+        <?php echo $this->tag->selectStatic("whichD", array("2D" => "2D", "2.5D" => "2.5D", "3D" => "3D")) ?>
+    </p>
+    <p>
+        <label for="intro">游戏介绍：</label><span class="error"><?php echo isset($introError) ? $introError : ''; ?></span>
+        <br>
+        <?php echo $this->tag->textArea(array("intro", "cols" => 100, "rows" => 10)); ?>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton("添加") ?>
+    </p>
+</div>
+

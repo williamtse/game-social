@@ -1,40 +1,32 @@
 <?php $this->partial("shared/banner"); ?>
 <div id="login-form">
     <h2>Sign up using this form</h2>
-    <?php echo $this->tag->form("signup/register"); ?>
+    <?php echo $this->tag->form("signup/login"); ?>
 
     <p>
-        <label for="name">Name</label>
+        <label for="name">登录名（用户名或邮箱）：</label>
+        <br>
         <?php echo $this->tag->textField("name") ?>
         <span class="error"><?php echo isset($nameError)?$nameError:'';?></span>
     </p>
-
-    <p>
-        <label for="email">E-Mail</label>
-        <?php echo $this->tag->textField("email") ?>
-        <span class="error"><?php echo isset($emailError)?$emailError:'';?></span>
-    </p>
     
     <p>
-        <label for="password">password</label>
+        <label for="password">密 码：</label>
+        <br>
         <?php echo $this->tag->passwordField("password") ?>
         <span class="error"><?php echo isset($passwordError)?$passwordError:'';?></span>
     </p>
 
     <p>
-        <label for="password_confirm">Password-Confirm</label>
-        <?php echo $this->tag->passwordField("password_confirm") ?>
-        <span class="error"><?php echo isset($password_confirmError)?$password_confirmError:'';?></span>
-    </p>
-    <p>
-        <label for="validate_code">Validate-Code</label>
+        <label for="validate_code">验证码：</label>
         <img id="code" class="validate_code"  src="/validatecode/flush" onclick="this.src='/validatecode/flush?'+Math.random()"/>
+        <br>
         <?php echo $this->tag->textField("validate_code") ?>
         <span class="error"><?php echo isset($validate_codeError)?$validate_codeError:'';?></span>
     </p>
     <p>
-        <?php echo $this->tag->submitButton("Register") ?>
-        <a href="/signup/login">登 录</a>
+        <?php echo $this->tag->submitButton("登 录") ?>
+        <a href="/signup/register">注 册</a>
     </p>
 
 </form>

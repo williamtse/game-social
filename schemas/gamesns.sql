@@ -9,13 +9,26 @@
  */
 drop table if exists users;create table users(
     userId int(11) not null primary key auto_increment,
+    `name` varchar(30),
     password varchar(255),
-    email varchar(128)
+    email varchar(128),
+    token varchar(128)
 )engine=innodb default charset=utf8;
 drop table if exists user_profiles;create table user_profiles()engine=innodb default charset=utf8;
 drop table if exists relationships;create table relationships()engine=innodb default charset=utf8;
 
-drop table if exists games;create table games()engine=innodb default charset=utf8;
+drop table if exists games;create table games(
+gameId int(11) not null primary key auto_increment,
+gameName varchar(50),
+preCharacter varchar(1),
+intro text,
+startRunTime date,
+whichD varchar(5),
+developCompany varchar(50),
+gameBigCategoryId tinyint(2),
+gameCategoryId tinyint(5),
+gameStyleId tinyint(5)
+)engine=innodb default charset=utf8;
 drop table if exists game_categories;create table game_categories()engine=innodb default charset=utf8;
 drop table if exists favorite_games;create table favorite_games()engine=innodb default charset=utf8;
 

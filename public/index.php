@@ -35,8 +35,9 @@ try {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
             "host" => "localhost",
             "username" => "root",
-            "password" => "123456",
-            "dbname" => "gamesns"
+            "password" => "",
+            "dbname" => "gamesns",
+            "charset"=>"utf8"
         ));
     });
     // Setup a base URI so that all generated URIs include the "tutorial" folder
