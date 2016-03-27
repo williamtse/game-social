@@ -1,5 +1,4 @@
 <?php
-use Phalcon\Mvc\Controller;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +10,7 @@ use Phalcon\Mvc\Controller;
  *
  * @author Administrator
  */
-class AdminController extends  Controller{
+class AdminController extends  GController{
     private $gameBigCategorys = ['网络游戏','网页游戏','单机游戏','手机游戏','电视游戏'];
     private $gameCategorys = ['角色扮演','休闲竞技','极速竞技','策略战棋','音乐舞蹈','射击对战','社区模拟'];
     private $gameStyles = ['武侠','现实','仙侠','动漫','神话','科幻','玄幻','奇幻','历史','魔幻'];
@@ -50,7 +49,8 @@ class AdminController extends  Controller{
                 $this->view->setVar('gameNameError','游戏名称未填写');
                 return;
             }
-            if(Games::findFirst(array('gameName'=>$gameName))){
+            $exi = $this->db->query('select * from games where gameName="'.$gameName.'"')->fetch();
+            if(!empty($exi)){
                 $this->view->setVar('gameNameError','游戏名称重复');
                 return;
             }
@@ -78,16 +78,20 @@ class AdminController extends  Controller{
                 'developCompany'=>  $this->request->getPost('developCompany'),
                 'preCharacter'=>$this->request->getPost('preCharacter'),
                 'intro'=>$this->request->getPost('intro'),
-                'startRunTime'=>$this->request->getPost('startRunTime')
+                'startRunTime'=>$this->request->getPost('startRunTime'),
+                'imgIds'=>  $this->request->getPost('imgids')
             ];
+            
             $game = new Games();
-            $id = $game->save($data);
+            $id = $game->create($data);
             if($id>0){
                 $this->view->setVar('sucessMessage','编辑成功!');
             }
         }
     }
-    
+    public function fileuploadAction(){
+        
+    }
     public function gameseditAction(){
         $gameId = $this->request->getQuery('id','int');
         $game = Games::findFirst($gameId);

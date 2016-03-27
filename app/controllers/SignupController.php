@@ -1,14 +1,13 @@
 <?php
 
-use Phalcon\Mvc\Controller;
 
-class SignupController extends Controller {
+class SignupController extends GController {
 
     public function registerAction() {
         if ($this->request->isPost() == true) {
             $user = new Users();
             $str = 'abcdefghijklmn0123456789!@#$%^&*()_+=-;[]~';
-            $token = crypt(substr(str_shuffle($str),rand(0,36),6));
+            $token = $this->getRandomToken();
             $name = $this->request->getPost('name');
             if (strlen(trim($name)) == 0) {
                 $this->view->setVar('nameError', 'Please enter your name!');
@@ -61,10 +60,15 @@ class SignupController extends Controller {
                 'token'=>$token,
                 'email'=>$email
             );
+            $profile = array(
+                'name'=>$name,
+                'email'=>$email
+            );
+            $userProfile = new UserProfiles();
+            $userProfile->create($profile);
             $userId = $user->save($userdata);
             if($userId>0){
-                $this->session->set('user-name',$name);
-                $this->response->redirect("index");
+                $this->response->redirect("signup/login");
             }
         }
     }
@@ -98,9 +102,14 @@ class SignupController extends Controller {
                 return;
             }else{
                 $this->session->set('user-name',$user['name']);
-                $this->response->redirect('user');
+                $this->session->set('user-id',$user['userId']);
+                $this->response->redirect('user/myspace');
             }
         }
+    }
+    public function logoutAction(){
+        $this->session->destroy();
+        $this->response->redirect('index');
     }
     public function adminloginAction(){
         if($this->request->isPost()){

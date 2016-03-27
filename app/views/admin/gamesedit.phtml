@@ -1,6 +1,6 @@
 <?php echo $this->tag->stylesheetLink("css/default.css")?>
 <div class="rightContent">
-    <h3><a href="/admin/games">编辑游戏</a>  <span class="success"><?php if(isset($sucessMessage)){echo $sucessMessage;} ?></span></h3>
+    <h3>编辑游戏  <span class="success"><?php if(isset($sucessMessage)){echo $sucessMessage;} ?></span></h3>
     <?php echo $this->tag->form("admin/gamesedit?id=".$gameinfo['gameId']); ?>
     <?php echo $this->tag->setDefaults($gameinfo);?>
     <p>

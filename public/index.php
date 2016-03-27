@@ -1,4 +1,5 @@
 <?php
+define("ROOT", dirname(__FILE__));
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -29,6 +30,10 @@ try {
     $di->set('view', function () {
         $view = new View();
         $view->setViewsDir('../app/views/');
+        $view->registerEngines(array(
+            ".phtml" => 'Phalcon\Mvc\View\Engine\Volt'
+        ));
+
         return $view;
     });
     $di->set('db', function() {

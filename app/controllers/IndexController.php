@@ -2,11 +2,11 @@
 
 use Phalcon\Mvc\Controller;
 
-class IndexController extends Controller
+class IndexController extends GController
 {
 
     public function indexAction()
     {
-
+        
     }
 }

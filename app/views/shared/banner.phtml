@@ -7,3 +7,17 @@
     </head>
     <body>
         <h1>Game SNS!</h1>
+        <p><?php if(!$this->session->get('user-name')){ ?>
+            <a href="/signup/register">注册</a> | <a href="/signup/login">登录</a>
+            <?php }else{?>
+            <a href="/myspace">{{userName}}</a>  <a href="/signup/logout">退出</a>
+            <?php }?>
+        </p>
+        <div class="nav">
+            <ul>
+                <li {%if controllerName=="index" %} class="curr" {% endif %}><a href="/index">首页</a></li>
+                <li {%if controllerName=="game" %} class="curr" {% endif %}><a href="/game/index">游戏</a></li> 
+                <li {%if controllerName=="team" %} class="curr" {% endif %}><a href="/team/index">战队</a></li>
+            </ul>
+        </div>
+        <div class="clearBoth"></div>

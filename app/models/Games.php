@@ -13,8 +13,18 @@ use Phalcon\Mvc\Model\Query;
  * @author Administrator
  */
 class Games extends Model{
-    public function getById($id){
-        $query = new Query('select * from games where gameId='.$id, $this->getDI());
-        return  $query->execute();
+	public $db;
+
+    public function initialize() {
+        $this->db = $this->getDi()->getShared('db');
+    }
+    public function getGameDetail($id){
+    	$sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img,(select concat(md5file,".",ext) from upload_files where id=g.video) as video from games g where gameId='.$id;
+    	return $this->db->query($sql)->fetch();
+    }
+    
+    public function getGames($where='',$order='',$limit=''){
+        $sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img,(select concat(md5file,".",ext) from upload_files where id=g.video) as video from games g '.$where.' '.$order.' '.$limit;
+        return $this->db->query($sql)->fetchAll();
     }
 }
