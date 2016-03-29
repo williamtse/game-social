@@ -15,10 +15,7 @@ and open the template in the editor.
 .validate_code{
     cursor: pointer;
 }
-.leftList{
-    float:left;
-    width:30%;
-}
+
 .rightContent{
     float:left;
 }
@@ -42,9 +39,19 @@ and open the template in the editor.
 .container{
     width:960px;
     margin:20px auto;
+    position: relative;
+}
+ul{
+    padding-left:2em;
+    list-style: none
+}
+*{
+    margin:0;
+    padding:0
 }
 .nav ul li{
     float: left;
+    
 }
 .nav ul li a{
     display: block;
@@ -73,4 +80,13 @@ a{
 }
 .fleft{
     float: left;
+}
+.copyright{
+    font-size:10px;
+}
+.top{
+    font-size:small;
+    background: #F0F0EE;
+    border-bottom: 1px solid #dedede;
+    text-align: right
 }

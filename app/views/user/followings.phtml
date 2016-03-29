@@ -1,0 +1,10 @@
+<?php $this->partial("shared/banner"); ?>
+{{javascriptInclude('js/jquery-1.9.0.js')}}
+{{javascriptInclude('js/layer/layer.js')}}
+<div class="container">
+    {%for following in followings%}
+    <p>{{following['name']}}</p>
+    {%endfor%}
+</div>
+<?php $this->partial("shared/footer"); ?>
+

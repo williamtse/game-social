@@ -15,29 +15,29 @@ class UserController extends GController {
         $user = new Users();
         $userinfo = $user->getUserByName($this->request->getQuery('name'));
         $this->view->setVar('userinfo', $userinfo);
+        $relat = new Relationships();
+        if($userId = $this->isLogin()){
+            $alrd = $relat->follower($userinfo['userId'],$userId);
+            $this->view->setVar('followed',$alrd);
+        }
     }
 
     
 
-    public function addfriendAction() {
+    public function followAction() {
         if (!$userId = $this->isLogin()) {
-            $this->jsonOp(500, '未登陆');
+            $this->jsonOp(503, '未登陆');
         }
 
-        $fid = $this->request->getPost('friendId');
+        $fid = $this->request->getPost('followingId');
         $relat = new Relationships();
-        $alrd = $relat->getMyFriend($userId, $fid);
+        $alrd = $relat->following($fid, $userId);
         if (!empty($alrd)) {
-            if ($alrd['status'] == 2)
-                $this->jsonOp(500, '已经是好友');
-            elseif($alrd['status'] == 1)
-                $this->jsonOp(500, '已经申请加好友');
-            elseif($alrd['status'] == 3)
-                $this->jsonOp(500, '申请加好友已经别拒绝');
+            $this->jsonOp(500, '已关注');
         }
         $data = [
-            'userId' => $userId,
-            'friendId' => $fid,
+            'followerId' => $userId,
+            'followingId' => $fid,
             'create_time' => $this->datetime()
         ];
         $relat->create($data);
@@ -48,31 +48,27 @@ class UserController extends GController {
         }
     }
     
-    public function passfriendAction(){
-        if (!$userId = $this->isLogin()) {
-            $this->jsonOp(500, '未登陆');
-        }
-        $id = $this->request->getPost('id');
-        $relat = Relationships::findFirst($id);
-        if($relat->status==2){
-            $this->jsonOp(200, '已通过');
-        }
-        $relat->status = 2;
-        if($relat->save()){
-            $model = new Relationships();
-            $data = [
-                'userId'=>$userId,
-                'friendId'=>$relat->userId,
-                'create_time'=>  $this->datetime(),
-                'status'=>2
-            ];
-            $model->create($data);
-            if($model->id>0)
-                $this->jsonOp(200);
-            else
-                $this->jsonOp(500);
+    public function unfollowAction(){
+        $rel = new Relationships();
+        $followingId = $this->request->getPost('followingId');
+        $followerId = $this->session->get('user-id');
+        $res = $rel->delFollower($followingId, $followerId);
+        if($res){
+            $this->jsonOp(200,'成功取消关注');
         } else {
-            $this->jsonOp(500,$relat->getMessages());
+            $this->jsonOp(500);
         }
     }
+    
+    public function followersAction(){
+        $relation = new Relationships();
+        $followers = $relation->followers($this->request->getQuery('id'));
+        $this->view->setVar('followers',$followers);
+    }
+    public function followingsAction(){
+        $relation = new Relationships();
+        $followings = $relation->followings($this->request->getQuery('id'));
+        $this->view->setVar('followings',$followings);
+    }
+    
 }

@@ -8,18 +8,27 @@ use Phalcon\Mvc\Controller;
  * @author Administrator
  */
 class GController extends Controller{
+    
     protected $controllerName='Index';
+    protected $pageTitle='';
+    
     public function beforeExecuteRoute($dispatcher)
     {
-        // 这个方法会在每一个能找到的action前执行
         $this->controllerName = $dispatcher->getControllerName();
         $this->view->setVar('controllerName',  $this->controllerName);
         if($userName = $this->session->get('user-name')){
             $this->view->setVar('userName',$userName);
+            $this->view->setVar('userId',$this->session->get('user-id'));
         }else{
             $this->view->setVar('userName',false);
+            $this->view->setVar('userId',false);
         }
     }
+    
+    public function afterExecuteRoute($dispatcher){
+        $this->view->setVar('pageTitle',  $this->pageTitle);
+    }
+    
     protected function jsonOp($status,$msg=''){
         echo json_encode(array('status'=>$status,'message'=>$msg));
         exit();
@@ -35,6 +44,12 @@ class GController extends Controller{
     }
     
     protected function getRandomToken(){
+        $str = 'abcdefghijklmn0123456789!@#$%^&*()_+=-;[]~';
         return crypt(substr(str_shuffle($str),rand(0,36),6),md5(rand(1000,9999)));
+    }
+    
+    protected function breakD($var){
+        var_dump($var);
+        exit();
     }
 }

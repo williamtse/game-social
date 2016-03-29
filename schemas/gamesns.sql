@@ -24,11 +24,12 @@ qq int(30),
 favGameStyleId int(11),
 favGameCategoryId int(11)
 )engine=innodb default charset=utf8;
-drop table if exists relationships;create table relationships(
+
+drop table if exists relationships;
+create table relationships(
 id int(255) not null primary key auto_increment,
-userId int(11),
-friendId int(11),
-status tinyint(1) not null default 1 comment '1-apply,2-pass,3-refuse',
+followerId int(11),
+followingId int(11),
 create_time datetime,
 update_time datetime
 )engine=innodb default charset=utf8;
@@ -44,7 +45,8 @@ developCompany varchar(50),
 gameBigCategoryId tinyint(2),
 gameCategoryId tinyint(5),
 gameStyleId tinyint(5),
-imgIds varchar(255)
+imgIds varchar(255),
+video text
 )engine=innodb default charset=utf8;
 
 drop table if exists upload_files;create table upload_files(
@@ -94,7 +96,7 @@ content text,
 `type` varchar(128),
 rowId int(11),
 userId int(11),
-score tinyint(1)
+score tinyint(1),
 create_time datetime
 )engine=innodb default charset=utf8;
 drop table if exists comment_comments;create table comment_comments()engine=innodb default charset=utf8;
@@ -102,3 +104,4 @@ drop table if exists comment_comments;create table comment_comments()engine=inno
 drop table if exists actions;create table actions()engine=innodb default charset=utf8;
 
 drop table if exists thirds;create table thirds()engine=innodb default charset=utf8;
+

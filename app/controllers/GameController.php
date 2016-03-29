@@ -11,15 +11,22 @@
  * @author Administrator
  */
 class GameController extends GController {
+    
+    public function onConstruct(){
+        $this->pageTitle = '游戏-';
+    }
+    
     public function indexAction(){
         $game = new Games();
         $games = $game->getGames();
         $this->view->setVar('games',$games);
     }
     public function detailAction(){
+        
         $id = $this->request->getQuery('id','int');
         $game = new Games();
         $detail = $game->getGameDetail($id);
+        $this->pageTitle = $detail['gameName'] . '-';
         $comment = new Comments();
         $comments = $comment->getGameComments($id);
         $score = $comment->getGameScore($id);

@@ -1,4 +1,4 @@
-<div class="top"><?php $this->partial("shared/banner"); ?></div>
+<?php $this->partial("shared/banner"); ?>
 <?php echo $this->tag->javascriptInclude("js/jquery.raty.js") ?>
 <?php echo $this->tag->javascriptInclude("js/ueditor/ueditor.config.js") ?>
 <?php echo $this->tag->javascriptInclude("js/ueditor/ueditor.all.js") ?>
@@ -12,9 +12,17 @@
             <p>评分：<span id="star-<?php echo $detail['gameId'] ?>"></span></p>
         </div>
         <div class="game-right">
-            <video src="/public/videos/<?php echo $detail['video']; ?>" controls="controls" width="500" autoplay="autoplay">
-            您的浏览器不支持 video 标签。
-            </video>
+            <object width="500" height="300" 
+                    codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,2,0" 
+                    classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"> 
+                <param value="{{detail['video']}}" name="movie"> 
+                <param value="high" name="quality"> 
+                <param value="transparent" name="wmode"> 
+                <param value="exactfit" name="SCALE"> 
+                <embed width="500" height="300" wmode="transparent" type="application/x-shockwave-flash" 
+                       pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" 
+                       quality="high" src="{{detail['video']}}"> 
+            </object> 
         </div>
     </div>
 
@@ -26,7 +34,7 @@
 
     <script>
         $('#star-<?php echo $detail['gameId'] ?>').raty({
-            path: '/public/js/img/',readOnly:true,start:<?php echo $score ?>
+            path: '/public/js/img/', readOnly: true, start:<?php echo $score ?>
         });
     </script>
     <div class="comments">
@@ -43,7 +51,7 @@
                     </div>
                     <script>
                         $('#comment-star-<?php echo $comment['id'] ?>').raty({
-                            path: '/public/js/img/',readOnly:true,start:<?php echo $comment['score'] ?>
+                            path: '/public/js/img/', readOnly: true, start:<?php echo $comment['score'] ?>
                         });
                     </script>
                 <?php } ?>
@@ -54,8 +62,8 @@
             <div id="content"></div>
             <p>
                 <label for="validate_code">验证码：</label>
-                <?php echo $this->tag->textField(array('validate_code','size'=>4)); ?>
-                <img id="code" class="validate_code"  src="/validatecode/flush" onclick="this.src='/validatecode/flush?'+Math.random()"/>
+                <?php echo $this->tag->textField(array('validate_code', 'size' => 4)); ?>
+                <img id="code" class="validate_code"  src="/validatecode/flush" onclick="this.src = '/validatecode/flush?' + Math.random()"/>
             </p>
             <script type="text/javascript">
                 $('#comment-star').raty({
@@ -73,21 +81,21 @@
                     var type = 'game';
                     var score = $('#comment-star-score').val();
                     var validcode = $('input[name=validate_code]').val();
-                    if(content.length==0){
+                    if (content.length == 0) {
                         $('#commentError').html('请填写评论内容！');
                         return;
-                    }else{
+                    } else {
                         $('#commentError').html('');
                     }
-                    if(validcode.length==0){
+                    if (validcode.length == 0) {
                         $('#commentError').html('请填写验证码！');
                         return;
-                    }else{
+                    } else {
                         $('#commentError').html('');
                     }
                     $.ajax({
                         url: '/comment/add',
-                        data: {content: content, type: type, rowId:<?php echo $detail['gameId']; ?>,score:score,validate_code:validcode},
+                        data: {content: content, type: type, rowId:<?php echo $detail['gameId']; ?>, score: score, validate_code: validcode},
                         dataType: 'json',
                         type: 'post',
                         success: function (re) {
@@ -96,7 +104,7 @@
 //                                $('#commentError').html('');
 //                                var data = re.data;
 //                                $('#comment-list').append('<div class="comment-item"><p><a href="/user/detail?name='+data.name+'">'+data.name+'</a></p><p>' + content + '</p></div>');
-                            }else if(re.status==500){
+                            } else if (re.status == 500) {
                                 $('#commentError').html(re.message);
                             }
                         }
@@ -107,4 +115,4 @@
         </div>
     </div>
 </div>
-<div class="top"><?php $this->partial("shared/copyright"); ?></div>
+<?php $this->partial("shared/copyright"); ?>

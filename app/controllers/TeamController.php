@@ -2,6 +2,10 @@
 
 class TeamController extends GController {
 
+    public function onConstruct(){
+        $this->pageTitle = '战队-';
+    }
+    
     public function indexAction() {
         $team = new Teams();
         $teams = $team->getTeams();
@@ -38,8 +42,9 @@ class TeamController extends GController {
     public function detailAction() {
         $team = new Teams();
         $teamInfo = $team->getTeamDetail($this->request->getQuery('id'));
+        $this->pageTitle = $teamInfo['teamProfile']['teamName'] . '战队-';
         if($userId = $this->session->get('user-id')){
-            if($teamInfo['createrId'] == $userId){
+            if($teamInfo['teamProfile']['createrId'] == $userId){
                 $this->view->setVar('isLeader',true);
             }else{
                 $this->view->setVar('isLeader',false);
@@ -64,10 +69,14 @@ class TeamController extends GController {
     
     public function joinAction(){
         $userId= $this->session->get('user-id');
-        if(!$userId) $this->jsonOp(500,'未登陆');
+        if(!$userId) $this->jsonOp(503,'未登陆');
         $teamMember = new TeamMembers();
+        $teamInfo = Teams::findFirst(array('id'=>  $this->request->getPost('teamId')));
+        if( $teamInfo->createrId == $userId )
+            $this->jsonOp (200,'创建者无需加入');
         $member = $teamMember->getTeamMember($this->request->getPost('teamId'),$userId);
-        if(!empty($member))            $this->jsonOp(500,'已申请过');
+        if(!empty($member))            
+            $this->jsonOp(500,'已申请过');
         $data =[
             'teamId'=> $this->request->getPost('teamId'),
             'userId'=>$userId,

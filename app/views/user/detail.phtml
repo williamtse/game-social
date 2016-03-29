@@ -1,22 +1,24 @@
 <?php $this->partial("shared/banner"); ?>
+{{javascriptInclude('js/jquery-1.9.0.js')}}
+{{javascriptInclude('js/layer/layer.js')}}
 <div class="container">
 <h1>{{userinfo['name']}}的主页</h1>
-<button onclick="addFriend({{userinfo['userId']}})">加好友</button>
+{%if userId!=userinfo['userId']%}
+{%if userName %}
+    {%if followed %}
+    <button onclick="unfollow({{userinfo['userId']}})" id="unfollow"  class="applyBtn">
+        取消关注
+    </button>
+    {%else%}
+    <button onclick="follow({{userinfo['userId']}})" id="follow">关注</button>
+    {%endif%}
+{%else%}
+    <button onclick="follow({{userinfo['userId']}})">关注</button>
+{%endif%}
+{%endif%}
 </div>
 <script>
-    function addFriend(userId){
-        $.ajax({
-            url:'/user/addfriend',
-            type:'post',
-            data:{friendId:userId},
-            dataType:'json',
-            success:function(re){
-                if(re.status==500)
-                    alert(re.message);
-            }
-            
-        });
-    }
+    
     </script>
-<?php $this->partial("shared/copyright"); ?>
+<?php $this->partial("shared/footer"); ?>
 

@@ -1,4 +1,19 @@
-<?php echo $this->tag->stylesheetLink("css/default.css")?>
+{{partial('admin/devision_header')}}
+{{stylesheetLink("css/default.css")}}
+{{javascriptInclude("js/jquery-1.9.0.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/vendor/jquery.ui.widget.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/tmpl.min.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/load-image.all.min.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/canvas-to-blob.min.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/bootstrap.min.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.blueimp-gallery.min.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.iframe-transport.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload-process.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload-image.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload-audio.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload-video.js")}}
+{{javascriptInclude("js/jQuery-File-Upload-9.12.1/js/jquery.fileupload-validate.js")}}
 <div class="rightContent">
     <h3>编辑游戏  <span class="success"><?php if(isset($sucessMessage)){echo $sucessMessage;} ?></span></h3>
     <?php echo $this->tag->form("admin/gamesedit?id=".$gameinfo['gameId']); ?>
@@ -27,6 +42,18 @@
         <span class="error"><?php echo isset($developCompanyError) ? $developCompanyError : ''; ?></span>
     </p>
     <p>
+        <label for="preCharacter">游戏图片：</label>
+        <?php echo $this->tag->fileField(array("name"=>"imgs[]","id"=>"fileupload"));?>
+        <input type="hidden" name="imgIds" value="{{gameinfo['img']}}">
+        <span class="error"><?php //echo isset($preCharacterError) ? $preCharacterError : ''; ?></span>
+        <br><img id="img" src="/public/img/{{gameinfo['img']}}">
+    </p>
+    <p>
+        <label for="preCharacter">游戏视频：</label>
+        <?php echo $this->tag->textField(array('video','size'=>100,'value'=> $gameinfo['video'])) ?>
+        <span class="error"></span>
+    </p>
+    <p>
         <label for="startRunTime">开始运营时间：</label>
         <?php echo $this->tag->dateField(array("startRunTime")) ?>
     </p>
@@ -37,10 +64,30 @@
     <p>
         <label for="intro">游戏介绍：</label><span class="error"><?php echo isset($introError) ? $introError : ''; ?></span>
         <br>
-        <?php echo $this->tag->textArea(array("intro", "cols" => 100, "rows" => 10)); ?>
+        <?php echo $this->tag->textArea(array("intro", "cols" => 70, "rows" => 10)); ?>
     </p>
     <p>
         <?php echo $this->tag->submitButton("保存") ?>
     </p>
 </div>
+<script>
+$(function () {
+    'use strict';
+    
+    $('#fileupload').fileupload({
+        url:'/file/imgupload',
+        dataType: 'json',
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        autoUpload:true,
+        sequentialUploads: true ,
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('#img').attr('src',file.url);
+                $('input[name="imgIds"]').val(file.imgId);
+            });
+            
+        }
+    });
 
+});
+</script>

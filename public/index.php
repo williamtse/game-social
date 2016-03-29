@@ -1,13 +1,12 @@
 <?php
 define("ROOT", dirname(__FILE__));
-
+ini_set('error_reporting', E_ALL);
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Application;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Url as UrlProvider;
-use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
-
+use Phalcon\Mvc\Model\Manager as ModelsManager;
 try {
 
     // Register an autoloader
@@ -20,6 +19,9 @@ try {
 
     // Create a DI
     $di = new FactoryDefault();
+    $di->set('modelsManager', function() {
+        return new ModelsManager();
+    });
     //session
     $di->setShared('session', function() {
         $session = new Phalcon\Session\Adapter\Files();
@@ -40,7 +42,7 @@ try {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
             "host" => "localhost",
             "username" => "root",
-            "password" => "",
+            "password" => "123456",
             "dbname" => "gamesns",
             "charset"=>"utf8"
         ));

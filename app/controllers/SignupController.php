@@ -6,7 +6,6 @@ class SignupController extends GController {
     public function registerAction() {
         if ($this->request->isPost() == true) {
             $user = new Users();
-            $str = 'abcdefghijklmn0123456789!@#$%^&*()_+=-;[]~';
             $token = $this->getRandomToken();
             $name = $this->request->getPost('name');
             if (strlen(trim($name)) == 0) {
@@ -103,7 +102,41 @@ class SignupController extends GController {
             }else{
                 $this->session->set('user-name',$user['name']);
                 $this->session->set('user-id',$user['userId']);
-                $this->response->redirect('user/myspace');
+                $this->response->redirect('myspace');
+            }
+        }
+    }
+    public function layerloginAction(){
+        if($this->request->isPost()){
+            $validate_code = $this->request->getPost('validate_code');
+            if(strtolower($validate_code)!=  strtolower($this->session->get('validate_code'))){
+                $this->jsonOp(500,'验证码不正确!');
+                return;
+            }
+            $name = $this->request->getPost('name');
+            if(strlen(trim($name))==0){
+                $this->jsonOp(500,'请输入用户名！');
+                return;
+            }
+            $user = $this->db->query('select * from users where (name="'.$name.'" or email="'.$name.'")')->fetch();
+            if(!$user){
+                $this->jsonOp(500,'该用户名或者邮箱不存在！');
+                return;
+            }else{
+                $token = $user['token'];
+            }
+            $password = $this->request->getPost('password');
+            if(strlen(trim($password))==0){
+                $this->jsonOp(500,'请输入密码！');
+                return;
+            }
+            if(!$this->db->query('select * from users where (name="'.$name.'" or email="'.$name.'") and password="'.md5($password.$token).'"')->fetch()){
+                $this->jsonOp(500,'密码不正确，请重新输入！');
+                return;
+            }else{
+                $this->session->set('user-name',$user['name']);
+                $this->session->set('user-id',$user['userId']);
+                $this->jsonOp(200);
             }
         }
     }

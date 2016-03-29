@@ -1,4 +1,5 @@
 <?php $this->partial("shared/banner"); ?>
+<div class="container">
 <div id="login-form">
     <h2>Sign up using this form</h2>
     <?php echo $this->tag->form("signup/register"); ?>
@@ -41,4 +42,4 @@
 </div>
 
 <?php $this->partial("shared/copyright"); ?>
-
+</div>

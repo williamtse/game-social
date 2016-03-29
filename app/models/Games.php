@@ -19,12 +19,14 @@ class Games extends Model{
         $this->db = $this->getDi()->getShared('db');
     }
     public function getGameDetail($id){
-    	$sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img,(select concat(md5file,".",ext) from upload_files where id=g.video) as video from games g where gameId='.$id;
+    	$sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img from games g where gameId='.$id;
     	return $this->db->query($sql)->fetch();
     }
     
     public function getGames($where='',$order='',$limit=''){
-        $sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img,(select concat(md5file,".",ext) from upload_files where id=g.video) as video from games g '.$where.' '.$order.' '.$limit;
+        $sql = 'select *,(select concat(md5file,".",ext) from upload_files where id=g.imgIds) as img,'
+             . '(select score from comments where comments.rowId=g.gameId)as score from games g '
+             . $where . ' ' . $order . ' ' . $limit;
         return $this->db->query($sql)->fetchAll();
     }
 }

@@ -76,7 +76,8 @@ class FileController extends Controller {
                             'url' => '/public/videos/' . $md5file.'.'.$ext,
                             'thumbnailUrl' => null,
                             'deleteUrl' => $md5file,
-                            'deleteType' => "DELETE"
+                            'deleteType' => "DELETE",
+                            'id'=>$fileId
                         ]
                 )));
             }

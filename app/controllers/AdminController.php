@@ -43,7 +43,6 @@ class AdminController extends  GController{
         $this->view->setVar('gameCategorys',  $this->gameCategorys);
         $this->view->setVar('gameStyles',  $this->gameStyles);
         if($this->request->isPost()){ 
-//            var_dump($_POST);exit();
             $gameName = $this->request->getPost('gameName');
             if(strlen(trim($gameName))==0){
                 $this->view->setVar('gameNameError','游戏名称未填写');
@@ -71,15 +70,16 @@ class AdminController extends  GController{
             }
             $data = [
                 'gameBigCategoryId'=>  $this->request->getPost('gameBigCategoryId'),
-                'gameCategoryId'=>  $this->request->getPost('gameCategoryId'),
-                'gameStyleId'=>$this->request->getPost('gameStyleId'),
-                'whichD'=>$this->request->getPost('whichD'),
-                'gameName'=>$this->request->getPost('gameName'),
-                'developCompany'=>  $this->request->getPost('developCompany'),
-                'preCharacter'=>$this->request->getPost('preCharacter'),
-                'intro'=>$this->request->getPost('intro'),
-                'startRunTime'=>$this->request->getPost('startRunTime'),
-                'imgIds'=>  $this->request->getPost('imgids')
+                'gameCategoryId'   =>  $this->request->getPost('gameCategoryId'),
+                'gameStyleId'      =>  $this->request->getPost('gameStyleId'),
+                'whichD'           =>  $this->request->getPost('whichD'),
+                'gameName'         =>  $this->request->getPost('gameName'),
+                'developCompany'   =>  $this->request->getPost('developCompany'),
+                'preCharacter'     =>  $this->request->getPost('preCharacter'),
+                'intro'            =>  $this->request->getPost('intro'),
+                'startRunTime'     =>  $this->request->getPost('startRunTime'),
+                'imgIds'           =>  $this->request->getPost('imgids'),
+                'video'            =>  $this->request->getPost('video')
             ];
             
             $game = new Games();
@@ -94,14 +94,13 @@ class AdminController extends  GController{
     }
     public function gameseditAction(){
         $gameId = $this->request->getQuery('id','int');
-        $game = Games::findFirst($gameId);
-        $gameinfo = $this->db->query('select * from games where gameId='.$gameId)->fetch();
+        $model = new Games();
+        $gameinfo = $model->getGameDetail($gameId);
         $this->view->setVar('gameinfo',$gameinfo);
         $this->view->setVar('gameBigCategorys',  $this->gameBigCategorys);
         $this->view->setVar('gameCategorys',  $this->gameCategorys);
         $this->view->setVar('gameStyles',  $this->gameStyles);
         if($this->request->isPost()){ 
-//            var_dump($_POST);exit();
             $gameName = $this->request->getPost('gameName');
             if(strlen(trim($gameName))==0){
                 $this->view->setVar('gameNameError','游戏名称未填写');
@@ -122,22 +121,27 @@ class AdminController extends  GController{
                 $this->view->setVar('introError','游戏介绍未填写');
                 return;
             }
+            $update = Games::findFirst($gameId);
             $data = [
-                'gameBigCategoryId'=>  $this->request->getPost('gameBigCategoryId'),
-                'gameCategoryId'=>  $this->request->getPost('gameCategoryId'),
-                'gameStyleId'=>$this->request->getPost('gameStyleId'),
-                'whichD'=>$this->request->getPost('whichD'),
-                'gameName'=>$this->request->getPost('gameName'),
-                'developCompany'=>  $this->request->getPost('developCompany'),
-                'preCharacter'=>$this->request->getPost('preCharacter'),
-                'intro'=>$this->request->getPost('intro'),
-                'startRunTime'=>$this->request->getPost('startRunTime')
+                'gameBigCategoryId'  =>  $this->request->getPost('gameBigCategoryId'),
+                'gameCategoryId'     =>  $this->request->getPost('gameCategoryId'),
+                'gameStyleId'        =>  $this->request->getPost('gameStyleId'),
+                'whichD'             =>  $this->request->getPost('whichD'),
+                'gameName'           =>  $this->request->getPost('gameName'),
+                'developCompany'     =>  $this->request->getPost('developCompany'),
+                'preCharacter'       =>  $this->request->getPost('preCharacter'),
+                'intro'              =>  $this->request->getPost('intro'),
+                'startRunTime'       =>  $this->request->getPost('startRunTime'),
+                'imgIds'             =>  $this->request->getPost('imgIds'),
+                'video'              =>  $this->request->getPost('video'),
             ];
-            foreach($data as $key=>$val){
-                $game->$key = $val;
+            foreach ($data as $k=>$v){
+                $update->$k = $v;
             }
-            if($game->save()){
+            if($update->save()){
                 $this->view->setVar('sucessMessage','编辑成功!');
+            }else{
+                $this->view->setVar('errorMessage','编辑失败!');
             }
         }
     }
