@@ -18,7 +18,7 @@ class Relationships extends GModel{
         return $this->db->query($sql)->fetch();
     }
     public function followers($uid){
-        $sql = 'select u.userId,u.name as userName from relationships r '
+        $sql = 'select r.*,u.userId,u.name from relationships r '
              . 'left join users u on u.userId=r.followerId where r.followingId='.$uid;
         return $this->db->query($sql)->fetchAll();
     }
@@ -30,7 +30,7 @@ class Relationships extends GModel{
         return $this->db->query($sql)->fetchAll();
     }
     public function followings($uid){
-        $sql = 'select r.*,u.* from relationships r '
+        $sql = 'select r.*,u.name,u.userId from relationships r '
              . 'left join users u on u.userId=r.followingId'
              . ' where r.followerId='.$uid;
         return $this->db->query($sql)->fetchAll();

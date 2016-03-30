@@ -16,6 +16,10 @@ class UserController extends GController {
         $userinfo = $user->getUserByName($this->request->getQuery('name'));
         $this->view->setVar('userinfo', $userinfo);
         $relat = new Relationships();
+        $followers = $relat->followers($userinfo['userId']);
+        $followings = $relat->followings($userinfo['userId']);
+        $this->view->setVar('followers',$followers);
+        $this->view->setVar('followings',$followings);
         if($userId = $this->isLogin()){
             $alrd = $relat->follower($userinfo['userId'],$userId);
             $this->view->setVar('followed',$alrd);
@@ -62,11 +66,17 @@ class UserController extends GController {
     
     public function followersAction(){
         $relation = new Relationships();
+        $user = new Users();
+        $userinfo = $user->getUserById($this->request->getQuery('id'));
+        $this->view->setVar('userinfo',$userinfo);
         $followers = $relation->followers($this->request->getQuery('id'));
         $this->view->setVar('followers',$followers);
     }
     public function followingsAction(){
         $relation = new Relationships();
+        $user = new Users();
+        $userinfo = $user->getUserById($this->request->getQuery('id'));
+        $this->view->setVar('userinfo',$userinfo);
         $followings = $relation->followings($this->request->getQuery('id'));
         $this->view->setVar('followings',$followings);
     }

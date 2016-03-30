@@ -83,10 +83,15 @@ a{
 }
 .copyright{
     font-size:10px;
+    text-align: center
 }
 .top{
     font-size:small;
     background: #F0F0EE;
     border-bottom: 1px solid #dedede;
     text-align: right
+}
+.space-left{
+    float: left;
+    width: 200px;
 }

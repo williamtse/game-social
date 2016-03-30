@@ -2,6 +2,7 @@
 {{javascriptInclude('js/jquery-1.9.0.js')}}
 {{javascriptInclude('js/layer/layer.js')}}
 <div class="container">
+    <h3>{{userinfo['name']}} followers</h3>
     {%for follower in followers%}
     <p>{{follower['name']}}</p>
     {%endfor%}

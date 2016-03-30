@@ -3,6 +3,11 @@
 {{javascriptInclude('js/layer/layer.js')}}
 <div class="container">
 <h1>{{userinfo['name']}}的主页</h1>
+<div>
+    <a href="/user/followers?id={{userinfo['userId']}}">followers(<?php echo count($followers);?>)</a>
+    |
+    <a href="/user/followings?id={{userinfo['userId']}}">followings(<?php echo count($followings);?>)</a>
+</div>
 {%if userId!=userinfo['userId']%}
 {%if userName %}
     {%if followed %}

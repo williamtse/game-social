@@ -1,5 +1,6 @@
 <?php $this->partial("shared/banner"); ?>
 <?php echo $this->tag->javascriptInclude("js/jquery-1.9.0.js"); ?>
+<?php echo $this->tag->javascriptinclude('js/layer/layer.js'); ?>
 <?php echo $this->tag->javascriptinclude('js/ueditor/ueditor.config.js'); ?>
 <?php echo $this->tag->javascriptinclude('js/ueditor/ueditor.all.js'); ?>
 <?php echo $this->tag->stylesheetLink("css/default.css") ?>
@@ -95,4 +96,4 @@
         });
     }
 </script>
-<?php $this->partial("shared/copyright"); ?>
+<?php $this->partial("shared/footer"); ?>

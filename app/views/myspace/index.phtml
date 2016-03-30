@@ -2,27 +2,68 @@
 {{javascriptInclude('js/jquery.js')}}
 <div class="container">
 <h1>{{userinfo['name']}}的主页</h1>
+<div class="space-left">
     <a href="/team/add">
         创建战队
     </a> 
-
-<div>
-    <a href="/user/followers?id={{userinfo['userId']}}">followers({{followers}})</a> |
-    <a href="/user/followings?id={{userinfo['userId']}}">followings({{followings}})</a>
+    <div>
+        <a href="/user/followers?id={{userinfo['userId']}}">粉丝(<?php echo count($followers)?>)</a> |
+        <a href="/user/followings?id={{userinfo['userId']}}">关注(<?php echo count($followings)?>)</a>
+    </div>
+    
+    <h3>我的战队</h3>
+    {%if myteams %}
+    <ul>
+      {%for team in myteams %}
+      <li>
+          <a href="/team/detail?id={{team['id']}}" target="_blank">
+              <img src="/public/img/thumb_{{team['img']}}" height="50">
+          <br>
+        {{team['teamName']}}</a>
+      </li>
+      {%endfor%}
+    </ul>
+    {%endif%}
+    
+    <h3>我的好友</h3>
+    {%if myfs %}
+    <ul>
+      {%for f in myfs %}
+      <li>
+        <a href="/user/detail?name={{f['name']}}" target="_blank">{{f['name']}}</a>
+        <button onclick="unfollow({{f['userId']}})">取消关注</button>
+      </li>
+      {%endfor%}
+    </ul>
+    {%endif%}
+    
+    <h3>粉丝</h3>
+    {%if followers %}
+    <ul>
+      {%for follower in followers %}
+      <li>
+        <a href="/user/detail?name={{follower['name']}}" target="_blank">{{follower['name']}}</a>
+      </li>
+      {%endfor%}
+    </ul>
+    {%endif%}
+    
+    <h3>关注</h3>
+    {%if followings %}
+    <ul>
+      {%for following in followings %}
+      <li>
+        <a href="/user/detail?name={{following['name']}}" target="_blank">{{following['name']}}</a>
+        <button onclick="unfollow({{following['userId']}})">取消关注</button>
+      </li>
+      {%endfor%}
+    </ul>
+    {%endif%}
 </div>
-
-
-<h3>我的好友</h3>
-{%if myfs %}
-<ul>
-  {%for f in myfs %}
-  <li>
-    <a href="/user/detail?name={{f['name']}}" target="_blank">{{f['name']}}</a>
-    <button onclick="unfollow({{f['userId']}})">取消关注</button>
-  </li>
-  {%endfor%}
-</ul>
-{%endif%}
+<div class="space-main">
+    
 </div>
+</div>
+<div class="clearBoth"></div>
 <?php $this->partial("shared/footer"); ?>
 

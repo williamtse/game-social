@@ -9,4 +9,8 @@ class Users extends GModel{
         $sql = 'select userId,name from users where name="'.$name.'"';
         return $this->db->query($sql)->fetch();
     }
+    public function getUserById($id){
+        $sql = 'select userId,name from users where userId="'.$id.'"';
+        return $this->db->query($sql)->fetch();
+    }
 }

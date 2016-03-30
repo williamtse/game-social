@@ -3,6 +3,11 @@
 <?php echo $this->tag->javascriptinclude('js/layer/layer.js'); ?>
 <div class="container">
 <h1><?php echo $userinfo['name']; ?>的主页</h1>
+<div>
+    <a href="/user/followers?id=<?php echo $userinfo['userId']; ?>">followers(<?php echo count($followers);?>)</a>
+    |
+    <a href="/user/followings?id=<?php echo $userinfo['userId']; ?>">followings(<?php echo count($followings);?>)</a>
+</div>
 <?php if ($userId != $userinfo['userId']) { ?>
 <?php if ($userName) { ?>
     <?php if ($followed) { ?>
